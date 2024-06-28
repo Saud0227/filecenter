@@ -1,4 +1,4 @@
-from fileInstance import FileInstance
+from fileInstance import FileInstance, FileObject, FolderObject
 
 
 class FileSystem:
@@ -13,18 +13,23 @@ class FileSystem:
 
         while len(to_check) > 0:
             current = to_check.pop(0)
-            children = current.get_children()
-            for child in children:
-                if child.is_dir:
-                    to_check.append(child)
-                else:
-                    out.append(child)
+            if isinstance(current, FileObject):
+                out.append(current)
+            else:
+                to_check.extend(current.children)
+
         return out
 
 
 def main():
     file_system = FileSystem('C:/Users/carlj/Downloads')
-    print(file_system.list_files())
+    # print(file_system.list_files())
+    for i in file_system.root:
+        print(i.file_name)
+
+    print(file_system.root[2])
+    print(file_system.root[3])
+    print(file_system.root.object_size)
 
 
 if __name__ == "__main__":
